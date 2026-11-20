@@ -90,7 +90,7 @@ def run(start: str, end: str, use_cache: bool = True) -> dict:
     assert n_bars > 0, "no bars survived the active Forex session filter"
 
     f0_frame = compute_f0(ohlcv)
-    f_series = compute_f(f0_frame["f0"])
+    f_series = compute_f(f0_frame["f0"], f0_frame["f0_raw"])
 
     result_f = backtest(ohlcv, f_series, config.DECISION_THETA)
     result_f0 = backtest(ohlcv, f0_frame["f0"], config.DECISION_THETA)

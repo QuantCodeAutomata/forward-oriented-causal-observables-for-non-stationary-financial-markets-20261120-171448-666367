@@ -48,10 +48,11 @@ Realized data: same 1,108,327 bars and date range as Experiment 1.
 
 | Metric | Paper (Sec. 3 / Table 1 / Fig. 3) | Reproduced | Verdict |
 |---|---|---|---|
-| F 2023–Sep-2024 end equity | ≈3.14 (cum. +214%, MDD -4%, ≈959 trades/month) | 0.898 (cum. -10.2%, MDD -14.1%, 189 trades/month) | not reproduced |
-| F post-Sep-2024 end equity | ≈2.74 (cum. -13%, MDD -17%, ≈1117 trades/month) | 0.915 (cum. -8.5%, MDD -11.3%, 276 trades/month) | not reproduced |
-| F whole-sample end equity (01-2026) | ≈2.75 | 0.821 (cum. -17.9%, MDD -20.2%) | not reproduced |
-| F vs. F_0 ranking (F end equity > F_0 end equity) | holds (2.75 > 2.45–2.50) | holds (0.821 > 0.426) | reproduced |
+| F 2023–Sep-2024 end equity | ≈3.14 (cum. +214%, MDD -4%, ≈959 trades/month) | 0.406 (cum. -59.4%, MDD -59.4%, 1156 trades/month) | not reproduced |
+| F post-Sep-2024 end equity | ≈2.74 (cum. -13%, MDD -17%, ≈1117 trades/month) | 0.663 (cum. -33.7%, MDD -34.0%, 1237 trades/month) | not reproduced |
+| F whole-sample end equity (01-2026) | ≈2.75 | 0.268 (cum. -73.2%, MDD -73.2%) | not reproduced |
+| F trading activity | ≈959–1117 trades/month | 1156–1237 trades/month | reproduced |
+| F vs. F_0 ranking (F end equity > F_0 end equity) | holds (2.75 > 2.45–2.50) | does not hold (0.268 < 0.426) | not reproduced |
 | Figure 2: forward-shifted F_0(t+k) gives larger cumulative gain than F_0(t) | monotonic increase with k | monotonic increase from 1.0009 (k=0) to 1.047 (k≈11), then flat (Dec-2025 excerpt, `exp2_summary.json["figure2_end_equity"]`) | reproduced |
 
 ## Localization of the gap
@@ -86,9 +87,15 @@ built exactly as specified by the paper (fixed scaling coefficients, Kalman
 parameters, threshold, Appendix A indicator formulas), has no material
 short-horizon predictive edge on the real EUR/USD interbank series used
 here, whereas the paper reports strong unconditional profitability on its
-own "EURUSDT" series. The paper's qualitative structural claims that do not
-depend on the specific instrument's profitability — the forward-shift
-advantage of Figure 2, and the ranking of F over F_0 — are reproduced.
+own "EURUSDT" series. The Figure 2 forward-shift advantage, which is a
+property of the F_0(t+k) construction itself rather than of the
+instrument's realized profitability, is reproduced. The F-over-F_0 end-
+equity ranking is not reproduced: on the EUR/USD series, F's much higher
+trading activity (1156-1237 vs. 767-825 trades/month for F_0, now matching
+the paper's reported order of magnitude for F once the derivative base of
+Eq. 4 is resolved — see "Derivative base for F(t)" below) compounds the
+instrument's lack of short-horizon predictability into a larger loss for F
+than for F_0, rather than the paper's larger gain for F.
 
 ## Deviations from the paper
 
@@ -125,20 +132,22 @@ advantage of Figure 2, and the ranking of F over F_0 — are reproduced.
   (America/New_York) is used.
 - **Derivative base for F(t).** The paper's Eq. 4 is evaluated on "the first
   derivative of F_0(t)" without stating whether F_0 here is the raw
-  composite or the Kalman-smoothed composite. Since Fig. 1 displays F_0 as
-  the post-Kalman stabilized signal, and the decision rule of Sec. 2.4 is
-  evaluated on the Kalman-smoothed F_0 in Experiment 1, the derivative is
-  taken of the Kalman-smoothed F_0(t) here as well. This is the most likely
-  cause of the observed trading-activity gap for F (189-276 trades/month
-  reproduced vs. ≈959-1117 reported): differencing an already
-  heavily-smoothed series yields a derivative term with materially smaller
-  magnitude than differencing the raw composite, which crosses the
-  theta=0.06 threshold less often. This was identified by inspecting the
-  derivative-term magnitude and trade counts directly, but not re-tested
-  against the raw-F_0-derivative alternative because the predictive-content
-  check above shows the whole-sample profitability gap has a different,
-  already-identified cause (data substitution), so changing this
-  interpretation would not close that gap.
+  composite or the Kalman-smoothed composite. A sensitivity check on a
+  one-month slice (`src.config.SAMPLE_START_TEST`/`SAMPLE_END_TEST`,
+  31,439 bars) compared both: differencing the Kalman-smoothed F_0 gives
+  209 trades/month, an order of magnitude below the paper's reported
+  ≈959-1117 trades/month for F; differencing the raw composite F_0 gives
+  1191 trades/month, matching the paper's order of magnitude. The
+  implementation therefore takes the causal finite-difference derivative of
+  the raw composite F_0(t) (`composite_f0_raw`), while the mixing
+  coefficients c1(t), c2(t) and the F_0(t) term of Eq. 4 itself still use
+  the Kalman-smoothed composite, consistent with the decision rule of
+  Sec. 2.4. With this choice, the whole-sample and subperiod trading
+  activity for F (1156 and 1237 trades/month) is reproduced within the
+  paper's reported order of magnitude, confirming the derivative base as
+  the correct interpretation of Eq. 4. This choice does not close the
+  whole-sample profitability gap, whose cause is identified separately
+  below (data substitution).
 - **Reported gap between Table 1 and the in-text/Figure 3 equity values
   (paper's own uncertainty).** The paper's Table 1 end-equity values for F
   (3.14, 2.74) do not match its own Figure 3 cumulative-return-table values

@@ -46,10 +46,12 @@ def compute_f0(ohlcv: pd.DataFrame) -> pd.DataFrame:
     return pd.concat([indicators, f0_frame], axis=1)
 
 
-def compute_f(f0_smoothed: pd.Series) -> pd.Series:
-    """Forward-oriented observable F(t) from the Kalman-smoothed F_0 (Sec. 2.3,
-    Eqs. 4-5)."""
-    return forward_operator(f0_smoothed)
+def compute_f(f0_smoothed: pd.Series, f0_raw: pd.Series) -> pd.Series:
+    """Forward-oriented observable F(t) (Sec. 2.3, Eqs. 4-5): mixing
+    coefficients and the F_0(t) term use the Kalman-smoothed composite
+    ``f0_smoothed``; the causal finite-difference derivative is taken of the
+    raw composite ``f0_raw`` (see ``forward_operator`` docstring)."""
+    return forward_operator(f0_smoothed, f0_raw)
 
 
 def backtest(ohlcv: pd.DataFrame, signal: pd.Series, theta: float) -> dict:

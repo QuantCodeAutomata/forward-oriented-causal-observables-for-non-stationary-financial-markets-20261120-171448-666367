@@ -4,11 +4,11 @@
     "2023-01-01 23:22:00+00:00",
     "2026-01-07 23:59:00+00:00"
   ],
-  "runtime_seconds": 63.15325903892517,
+  "runtime_seconds": 61.50783729553223,
   "f_strategy": {
-    "end_equity": 0.8211894655910689,
-    "cum_return_pct": -17.881053440893112,
-    "max_drawdown_pct": -20.231252218960194
+    "end_equity": 0.2678281160933421,
+    "cum_return_pct": -73.21718839066578,
+    "max_drawdown_pct": -73.22407067999144
   },
   "f0_strategy": {
     "end_equity": 0.42639569211448686,
@@ -20,23 +20,23 @@
     "cum_return_pct": 9.162303665041449,
     "max_drawdown_pct": -10.226164079793708
   },
-  "total_trades_f": 8170.0,
+  "total_trades_f": 43121.0,
   "total_trades_f0": 28666.0,
   "subperiods_F": [
     {
       "period": "2023-Sep2024",
-      "end_equity": 0.8980414716574351,
-      "cum_return_pct": -10.195852834256492,
-      "max_drawdown_pct": -14.117490192311832,
-      "trades_per_month": 189.15969822863852,
+      "end_equity": 0.4057587884990688,
+      "cum_return_pct": -59.42412115009312,
+      "max_drawdown_pct": -59.44228988709715,
+      "trades_per_month": 1156.411259466466,
       "n_bars": 643708
     },
     {
       "period": "post-Sep2024",
-      "end_equity": 0.9151269386181082,
-      "cum_return_pct": -8.487306138189176,
-      "max_drawdown_pct": -11.268873522661139,
-      "trades_per_month": 275.70339889158123,
+      "end_equity": 0.6625568033143643,
+      "cum_return_pct": -33.74431966856357,
+      "max_drawdown_pct": -34.02142573674705,
+      "trades_per_month": 1237.4182528410154,
       "n_bars": 463179
     }
   ],

@@ -102,18 +102,26 @@ def kalman_1d_filter(
     return pd.Series(smoothed, index=observations.index)
 
 
-def forward_operator(f0_smoothed: pd.Series) -> pd.Series:
+def forward_operator(f0_smoothed: pd.Series, f0_raw: pd.Series) -> pd.Series:
     """Forward-oriented observable F(t), Eqs. 4-5.
 
     F(t) = c1(t)*F_0(t) + 2*c2(t)*smoothed_derivative(F_0(t))
     c1(t) = tanh(|F_0(t)|), c2(t) = 1 - tanh(|F_0(t)/2|)
 
-    The causal finite-difference derivative of the Kalman-smoothed F_0(t) is
-    taken (Fig. 1 shows F_0 as the post-Kalman stabilized signal, which is
-    also what the decision rule of Sec. 2.4 is evaluated on in exp_1), then
-    smoothed with a span-4 moving average (Eq. 4).
+    The causal finite-difference derivative is taken of the raw composite
+    F_0(t) (``composite_f0_raw``), not its Kalman-smoothed version: Sec. 2.3
+    motivates the derivative term as injecting "local forward-oriented
+    structure", which a derivative of the already heavily-smoothed Kalman
+    output would largely remove. A sensitivity check on a one-month slice
+    confirms this: differencing the raw composite yields a monthly trade
+    count (~1190/month) that matches the paper's reported order of magnitude
+    for F (~959-1117 trades/month, Table 1), whereas differencing the
+    Kalman-smoothed composite yields ~209/month, an order of magnitude too
+    low. The mixing coefficients c1, c2 and the F_0(t) term itself still use
+    the Kalman-smoothed composite, consistent with Fig. 1 and the decision
+    rule of Sec. 2.4 in exp_1. Smoothed with a span-4 moving average (Eq. 4).
     """
-    derivative = f0_smoothed.diff()
+    derivative = f0_raw.diff()
     smoothed_derivative = derivative.rolling(
         window=DERIVATIVE_SMOOTHING_SPAN, min_periods=1
     ).mean()

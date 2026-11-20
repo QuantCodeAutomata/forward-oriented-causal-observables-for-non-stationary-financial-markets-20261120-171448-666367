@@ -29,7 +29,7 @@ def test_pipeline_runs_end_to_end_on_real_slice(eurusd_slice):
     f0_frame = compute_f0(ohlcv)
     assert {"f0_raw", "f0", "rsi", "mfi", "macd_diff", "bb_pct"} <= set(f0_frame.columns)
 
-    f_series = compute_f(f0_frame["f0"])
+    f_series = compute_f(f0_frame["f0"], f0_frame["f0_raw"])
     assert f_series.notna().sum() > 0
 
     result_f0 = backtest(ohlcv, f0_frame["f0"], config.DECISION_THETA)

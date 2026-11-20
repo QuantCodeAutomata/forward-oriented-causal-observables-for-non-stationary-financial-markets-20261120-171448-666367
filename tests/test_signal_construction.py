@@ -89,7 +89,7 @@ def test_build_f0_returns_raw_and_smoothed_columns():
 
 def test_forward_operator_reduces_to_zero_derivative_when_f0_constant():
     f0 = pd.Series(np.full(50, 0.1))
-    f = forward_operator(f0)
+    f = forward_operator(f0, f0)
     # Derivative is zero for a constant series, so F(t) = c1(t) * F0(t).
     expected_c1 = np.tanh(0.1)
     valid = f.dropna()
@@ -98,7 +98,19 @@ def test_forward_operator_reduces_to_zero_derivative_when_f0_constant():
 
 def test_forward_operator_prefix_invariant():
     rng = np.random.default_rng(5)
-    f0 = pd.Series(rng.normal(0, 0.1, size=120))
-    full = forward_operator(f0)
-    prefix = forward_operator(f0.iloc[:60])
+    f0_smoothed = pd.Series(rng.normal(0, 0.1, size=120))
+    f0_raw = pd.Series(rng.normal(0, 0.1, size=120))
+    full = forward_operator(f0_smoothed, f0_raw)
+    prefix = forward_operator(f0_smoothed.iloc[:60], f0_raw.iloc[:60])
     pd.testing.assert_series_equal(full.iloc[:60], prefix, check_exact=False)
+
+
+def test_forward_operator_derivative_uses_raw_not_smoothed_f0():
+    # The derivative term must come from f0_raw: a smoothed f0 that is constant
+    # (zero derivative) combined with a varying f0_raw must still produce a
+    # nonzero derivative contribution to F(t).
+    f0_smoothed = pd.Series(np.full(10, 0.1))
+    f0_raw = pd.Series(np.linspace(0.0, 1.0, 10))
+    f = forward_operator(f0_smoothed, f0_raw)
+    c1 = np.tanh(0.1)
+    assert not np.allclose(f.dropna(), c1 * 0.1, atol=1e-6)
