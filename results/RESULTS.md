@@ -147,12 +147,12 @@ than for F_0, rather than the paper's larger gain for F.
   the correct interpretation of Eq. 4. This choice does not close the
   whole-sample profitability gap, whose cause is identified separately
   below (data substitution).
-- **Reported gap between Table 1 and the in-text/Figure 3 equity values
-  (paper's own uncertainty).** The paper's Table 1 end-equity values for F
-  (3.14, 2.74) do not match its own Figure 3 cumulative-return-table values
-  (3.10 at 09-2024, 2.75 at 01-2026) quoted in the task description; the
-  reconciled, more conservative Figure-3-style whole-sample figures (≈2.75
-  for F, ≈2.45-2.50 for F_0) are used as the comparison target above.
+- **Reported gap between Table 1 and the in-text/Figure 3 equity values.**
+  The paper's Table 1 end-equity values for F (3.14, 2.74) do not match its
+  own Figure 3 cumulative-return-table values (3.10 at 09-2024, 2.75 at
+  01-2026); the reconciled, more conservative Figure-3-style whole-sample
+  figures (≈2.75 for F, ≈2.45-2.50 for F_0) are used as the comparison
+  target above.
 
 ## Not reproduced
 
