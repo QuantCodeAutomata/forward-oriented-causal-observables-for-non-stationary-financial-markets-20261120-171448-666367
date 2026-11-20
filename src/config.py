@@ -67,8 +67,7 @@ KALMAN_Q = 0.01  # process-noise variance, Sec. 2.2: "q = 0.01"
 KALMAN_R = 0.1  # measurement-noise variance, Sec. 2.2: "r = 0.1"
 # Initial state covariance P_0: the paper only states x_0 = z_0 (Appendix B)
 # and does not specify P_0 -- not specified in the paper; P_0 = r is used as a
-# conservative default (the measurement-noise variance), as suggested by the
-# accompanying implementation notes.
+# conservative default (the measurement-noise variance).
 KALMAN_P0 = KALMAN_R
 
 # ---------------------------------------------------------------------------

@@ -125,8 +125,7 @@ than for F_0, rather than the paper's larger gain for F.
   signal 12/26/9 (Appel, 1979), Bollinger window 20 with k=2 standard
   deviations.
 - **Unspecified Kalman initial variance.** The paper specifies x_0=z_0 but
-  not P_0; P_0 = r = 0.1 is used as a conservative default, matching the
-  implementation notes.
+  not P_0; P_0 = r = 0.1 is used as a conservative default.
 - **Local time zone for the Forex-session filter.** The paper does not name
   the timezone of "local time"; the standard Forex-session convention
   (America/New_York) is used.
