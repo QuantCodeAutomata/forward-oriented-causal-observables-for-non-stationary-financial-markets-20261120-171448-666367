@@ -1,0 +1,37 @@
+{
+  "n_bars": 1108327,
+  "date_range": [
+    "2023-01-01 23:22:00+00:00",
+    "2026-01-07 23:59:00+00:00"
+  ],
+  "runtime_seconds": 37.789573192596436,
+  "f0_strategy": {
+    "end_equity": 0.42639569211448686,
+    "cum_return_pct": -57.36043078855131,
+    "max_drawdown_pct": -57.372376876302
+  },
+  "buy_and_hold": {
+    "end_equity": 1.0916230366504145,
+    "cum_return_pct": 9.162303665041449,
+    "max_drawdown_pct": -10.226164079793708
+  },
+  "total_trades": 28666.0,
+  "subperiods": [
+    {
+      "period": "2023-Sep2024",
+      "end_equity": 0.579654856357185,
+      "cum_return_pct": -42.03451436428149,
+      "max_drawdown_pct": -42.48155746980061,
+      "trades_per_month": 767.2458787965338,
+      "n_bars": 643708
+    },
+    {
+      "period": "post-Sep2024",
+      "end_equity": 0.7377459707606369,
+      "cum_return_pct": -26.225402923936315,
+      "max_drawdown_pct": -26.53529061532143,
+      "trades_per_month": 824.9455018940102,
+      "n_bars": 463179
+    }
+  ]
+}
